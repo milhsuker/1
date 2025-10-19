@@ -1,0 +1,474 @@
+<!--
+# تعليمات النشر على GitHub Pages
+
+لجعل هذا الموقع يعمل على الإنترنت مجانًا باستخدام GitHub Pages، اتبع الخطوات التالية:
+
+1.  **إنشاء مستودع (Repository):**
+    - اذهب إلى حسابك في GitHub وأنشئ مستودعًا جديدًا. يمكنك تسميته أي اسم، مثلاً `restaurant-menu`.
+
+2.  **رفع الملفات:**
+    - قم برفع هذا الملف (`index.html`) إلى المستودع الذي أنشأته.
+
+3.  **تفعيل GitHub Pages:**
+    - داخل المستودع، اذهب إلى قسم "Settings".
+    - في القائمة الجانبية، اختر "Pages".
+    - تحت قسم "Branch"، اختر الفرع `main` (أو `master`) واختر المجلد `/(root)`.
+    - اضغط على "Save".
+
+4.  **الوصول للموقع:**
+    - بعد دقيقة أو دقيقتين، سيظهر رابط موقعك في نفس الصفحة. سيكون على هذا الشكل:
+      `https://<your-username>.github.io/<repository-name>`
+    - الآن موقعك يعمل ومتاح للجميع!
+
+-->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مطعم ملح وسكر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #338d83;
+            scroll-behavior: smooth;
+        }
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar for cart */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #fffacd;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #ffd700;
+            border-radius: 10px;
+            border: 2px solid #fffacd;
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+  <script type="module" crossorigin src="/assets/index-B5Qt9EMX.js"></script>
+</head>
+<body>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-[#ffd700] text-gray-800 font-bold py-3 px-6 rounded-lg shadow-xl transition-all duration-300 opacity-0 -translate-y-10 z-50">
+</div>
+
+<div class="min-h-screen text-gray-800 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <header id="header-section" class="flex flex-col items-center justify-center min-h-screen text-center text-white fade-in px-4">
+            <div class="bg-black bg-opacity-40 p-6 sm:p-8 rounded-2xl shadow-2xl max-w-lg w-full">
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold mb-4">
+                    <span class="font-pacifico text-yellow-300">Milh & Suker</span>
+                </h1>
+                <p class="text-lg sm:text-xl md:text-2xl mb-2 font-sans tracking-wider text-gray-200">
+                    أهلاً بكم في مطعم ملح وسكر
+                </p>
+                 <p class="text-md sm:text-lg mb-8 text-gray-300">
+                    أفضل بركر ودجاج عراقي بنكهات أصلية
+                </p>
+                <button id="show-menu-btn" class="bg-[#ffd700] text-gray-800 font-bold py-3 px-8 text-lg rounded-lg shadow-md hover:bg-yellow-300 transition-colors transform hover:scale-105">
+                    عرض قائمة الطعام
+                </button>
+                <div class="mt-10 sm:mt-12 flex justify-center space-x-6">
+                    <a id="instagram-link" href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#ffd700] transition-colors" aria-label="Instagram">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9 26.3 26.2 58 34.4 93.9 36.2 37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8z"></path></svg>
+                    </a>
+                    <a id="telegram-link" href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#ffd700] transition-colors" aria-label="Telegram">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.5z"></path></svg>
+                    </a>
+                    <a id="whatsapp-link-header" href="#" target="_blank" rel="noopener noreferrer" class="text-white hover:text-[#ffd700] transition-colors" aria-label="WhatsApp">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101.5 32 1.9 131.6 1.9 254c0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5-.1 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu & Cart Section -->
+        <div id="menu-section" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-6">
+                 <h1 class="text-4xl md:text-5xl font-bold text-white shadow-sm">
+                    <span class="font-pacifico">Milh & Suker</span>
+                    <span class="block text-2xl text-yellow-300 font-sans tracking-wider">قائمة الطعام</span>
+                </h1>
+                 <button id="back-to-header-btn" class="bg-[#ffd700] text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md hover:bg-yellow-300 transition-colors">
+                    الرجوع للرئيسية
+                </button>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Menu Container -->
+                <div id="menu-container" class="lg:col-span-2 space-y-8">
+                    <!-- Menu content will be injected here by JavaScript -->
+                </div>
+                <!-- Cart Container -->
+                <div class="sticky top-8 h-fit">
+                    <div class="bg-[#fffacd] rounded-xl shadow-lg p-6 border-2 border-[#ffd700]">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold text-gray-800">سلة الطلبات</h2>
+                            <button id="clear-cart-btn" class="text-red-500 hover:text-red-700 transition-colors hidden" aria-label="تفريغ السلة">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                        
+                        <div id="cart-items-container" class="space-y-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                            <p id="empty-cart-msg" class="text-gray-500 text-center py-8">سلتك فارغة حالياً.</p>
+                        </div>
+        
+                        <div id="cart-summary" class="hidden">
+                            <div class="border-t-2 border-dashed border-gray-300 my-4"></div>
+                            <div class="text-xl font-bold flex justify-between text-gray-800 mb-4">
+                                <span>المجموع الكلي:</span>
+                                <span id="cart-total" class="text-[#338d83]">0 د.ع</span>
+                            </div>
+        
+                            <div>
+                                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">
+                                    ملاحظات إضافية
+                                </label>
+                                <textarea id="notes" rows="3" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-[#ffd700] focus:border-[#ffd700]" placeholder="مثال: بدون مايونيز..."></textarea>
+                            </div>
+        
+                            <div class="mt-6 space-y-3">
+                                <button id="send-whatsapp-btn" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 flex items-center justify-center gap-2 transition-colors">
+                                    <svg class="w-6 h-6" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101.5 32 1.9 131.6 1.9 254c0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5-.1 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                                    <span>إرسال الطلب عبر واتساب</span>
+                                </button>
+                                <button id="send-telegram-btn" class="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 flex items-center justify-center gap-2 transition-colors">
+                                    <svg class="w-6 h-6" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.5z"></path></svg>
+                                    <span>إرسال الطلب عبر تيليجرام</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- START: DATA & CONSTANTS ---
+    const INSTAGRAM_URL = 'https://www.instagram.com/milh_suker';
+    const TELEGRAM_USERNAME = 'GF1FF';
+    const WHATSAPP_NUMBER = '9647733387676';
+
+    const menuData = [
+        { name: 'الساندويتش والبرجر', notes: 'البرجر متوفر بلحم العجل أو الدجاج العراقي.', items: [
+            { id: 1, name: 'بركر كلاسك', description: 'شريحة بركر 125غ لحم أو دجاج عراقي مع خبز البركر (صمونة) المخبوزة داخل المطعم مع الخس والطماطم والخيار المخلل والصوص الخاص.', variants: [{ name: 'لحم عراقي', price: 5000 }, { name: 'دجاج عراقي', price: 4000 }] },
+            { id: 2, name: 'بركر بالجبن', description: 'شريحة بركر 125غ لحم أو دجاج مع خبز البركر، خس، طماطم، خيار مخلل، صوص الشيدر وصوص المطعم.', variants: [{ name: 'لحم', price: 5500 }, { name: 'دجاج', price: 4500 }] },
+            { id: 3, name: 'بركر دبل', price: 6500, description: 'شريحتان من البركر (250غ إجمالي) مع خبز وخضار وصوص.' },
+            { id: 4, name: 'بركر بالفطر', description: 'بركر لحم أو دجاج مع خبز، خس، طماطم، صوص كريمة فطر.', variants: [{ name: 'لحم', price: 6000 }, { name: 'دجاج', price: 5000 }] },
+            { id: 5, name: 'كرانشي بركر', description: 'بركر لحم أو دجاج مع خبز، خس، خيار، صوص خاص وبطاطا مقرمشة.', variants: [{ name: 'لحم', price: 6000 }, { name: 'دجاج', price: 5000 }] },
+            { id: 6, name: 'بافلو بركر', price: 7500, description: 'دجاج مقرمش بصوص بافلو، خس، كولسلو، شريحة تركي مدخن، بطاطا كرانشي.' },
+            { id: 7, name: 'ساندويتش ستيك دجاج', price: 4500, description: 'دجاج مشوي مع خبز البركر، خس، خيار، صوص.' },
+            { id: 8, name: 'ساندويتش دجاج مقلي', price: 4500, description: 'دجاج مقلي مع خبز البركر، كولسلو، خيار، صوص.' }
+        ]},
+        { name: 'الريزو', items: [
+            { id: 9, name: 'ريزو كلاسك', price: 5000, description: 'رز مبهر مع دجاج مقرمش وصوص خاص.' },
+            { id: 10, name: 'ريزو مدخن', price: 5000, description: 'رز مع دجاج مقرمش وصوص باربكيو.' },
+            { id: 11, name: 'ريزو ستيك دجاج', price: 6000, description: 'رز مع دجاج مشوي وصوص كريمة الفطر.' }
+        ]},
+        { name: 'البيتزا', notes: 'جميع أنواع البيتزا متوفرة بحجمين.', items: [
+            { id: 12, name: 'بيتزا سجق لحم عراقي', description: 'بيتزا شهية مع سجق اللحم العراقي الأصلي.', variants: [{ name: 'كبير', price: 14000 }, { name: 'وسط', price: 12000 }] },
+            { id: 13, name: 'بيتزا دجاج', description: 'قطع الدجاج المتبلة مع صلصة البيتزا الغنية.', variants: [{ name: 'كبير', price: 12000 }, { name: 'وسط', price: 10000 }] },
+            { id: 14, name: 'بيتزا الفطر', description: 'مزيج من الفطر الطازج والجبن الذائب.', variants: [{ name: 'كبير', price: 12000 }, { name: 'وسط', price: 10000 }] },
+            { id: 15, name: 'بيتزا كرسبي', description: 'بيتزا مغطاة بقطع الدجاج الكرسبي المقرمشة.', variants: [{ name: 'كبير', price: 12000 }, { name: 'وسط', price: 10000 }] },
+            { id: 16, name: 'بيتزا خضار', description: 'تشكيلة من الخضروات الطازجة الموسمية.', variants: [{ name: 'كبير', price: 10000 }, { name: 'وسط', price: 8000 }] }
+        ]},
+        { name: 'البيدا', items: [
+            { id: 17, name: 'بيدا لحم عراقي', price: 7500, description: 'فطيرة تركية باللحم المفروم على الطريقة العراقية.' },
+            { id: 18, name: 'بيدا سجق', price: 7500, description: 'فطيرة تركية غنية بقطع السجق الشهي.' },
+            { id: 19, name: 'بيدا الأجبان', price: 7000, description: 'مزيج من الأجبان الفاخرة على فطيرة البيدا الهشة.' }
+        ]},
+        { name: 'المناقيش', items: [
+            { id: 20, name: 'منقوشة لحم عراقي', price: 4000, description: 'عجينة طرية مغطاة باللحم المفروم المتبل.' },
+            { id: 21, name: 'منقوشة جبن', price: 4000, description: 'طبقة غنية من الجبن الذائب على عجينة المناقيش.' },
+            { id: 22, name: 'منقوشة زعتر', price: 3500, description: 'مزيج الزعتر التقليدي مع زيت الزيتون.' },
+            { id: 23, name: 'منقوشة جبن وزعتر', price: 4000, description: 'تجمع بين نكهة الجبن المالحة والزعتر العطري.' },
+            { id: 24, name: 'منقوشة لبنة وزيتون', price: 4000, description: 'لبنة كريمية مع حبات الزيتون على عجينة طرية.' }
+        ]},
+        { name: 'البطاطا', items: [
+            { id: 25, name: 'قدح بطاطا', price: 1500, description: 'بطاطا مقلية مقرمشة في قدح مناسب.' },
+            { id: 26, name: 'صحن بطاطا', price: 3000, description: 'صحن كبير من البطاطا المقلية الذهبية.' }
+        ]},
+        { name: 'المشروبات', items: [
+            { id: 27, name: 'كولا', price: 500, description: 'مشروب غازي منعش.' },
+            { id: 28, name: 'سبرايت', price: 500, description: 'مشروب غازي بنكهة الليمون.' },
+            { id: 29, name: 'مياه المدى', price: 500, description: 'مياه معدنية نقية.' }
+        ]}
+    ];
+    // --- END: DATA & CONSTANTS ---
+
+    // --- START: STATE ---
+    let cart = [];
+    // --- END: STATE ---
+
+    // --- START: DOM SELECTORS ---
+    const headerSection = document.getElementById('header-section');
+    const menuSection = document.getElementById('menu-section');
+    const showMenuBtn = document.getElementById('show-menu-btn');
+    const backToHeaderBtn = document.getElementById('back-to-header-btn');
+    const menuContainer = document.getElementById('menu-container');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const emptyCartMsg = document.getElementById('empty-cart-msg');
+    const cartSummary = document.getElementById('cart-summary');
+    const cartTotalEl = document.getElementById('cart-total');
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+    const notesEl = document.getElementById('notes');
+    const sendWhatsappBtn = document.getElementById('send-whatsapp-btn');
+    const sendTelegramBtn = document.getElementById('send-telegram-btn');
+    const toastEl = document.getElementById('toast');
+    // --- END: DOM SELECTORS ---
+    
+    // --- START: HELPER FUNCTIONS ---
+    const formatPrice = (price) => price.toLocaleString();
+
+    const showToast = (message) => {
+        toastEl.textContent = message;
+        toastEl.classList.remove('opacity-0', '-translate-y-10');
+        setTimeout(() => {
+            toastEl.classList.add('opacity-0', '-translate-y-10');
+        }, 2800);
+    };
+
+    const saveCart = () => {
+        localStorage.setItem('milhSukerCart', JSON.stringify(cart));
+    };
+
+    const loadCart = () => {
+        const savedCart = localStorage.getItem('milhSukerCart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+        }
+    };
+    // --- END: HELPER FUNCTIONS ---
+
+    // --- START: RENDER FUNCTIONS ---
+    const renderMenu = () => {
+        menuContainer.innerHTML = '';
+        menuData.forEach(category => {
+            const categoryHtml = `
+                <div class="fade-in">
+                    <div class="mb-4">
+                        <h2 class="text-3xl font-bold text-[#ffd700] border-b-2 border-[#ffd700] pb-2 inline-block">${category.name}</h2>
+                        ${category.notes ? `<p class="text-white mt-2 text-sm">${category.notes}</p>` : ''}
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${category.items.map(item => `
+                            <div class="bg-[#fffacd] rounded-xl shadow-lg p-4 flex flex-col justify-between border-2 border-transparent hover:border-[#ffd700] transition-all duration-300" data-product-id="${item.id}">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">${item.name}</h3>
+                                    <p class="text-gray-600 my-2 text-sm min-h-[40px]">${item.description}</p>
+                                </div>
+                                ${item.variants ? `
+                                <div class="my-3">
+                                    <div class="flex flex-wrap gap-2">
+                                        ${item.variants.map((variant, index) => `
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="variant-${item.id}" value="${variant.name}" class="sr-only peer" ${index === 0 ? 'checked' : ''} data-price="${variant.price}">
+                                                <div class="px-3 py-1 text-sm font-semibold rounded-full border-2 transition-colors bg-white text-gray-700 border-gray-300 peer-checked:bg-[#338d83] peer-checked:text-white peer-checked:border-[#338d83] hover:border-[#338d83]">
+                                                    ${variant.name}
+                                                </div>
+                                            </label>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-lg font-bold text-[#338d83] item-price">${formatPrice(item.variants ? item.variants[0].price : item.price)} د.ع</span>
+                                    <button class="add-to-cart-btn bg-[#ffd700] text-gray-800 p-2 rounded-full shadow-md hover:bg-yellow-300 transform hover:scale-110 transition-transform" aria-label="إضافة ${item.name} للسلة">
+                                        <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            menuContainer.innerHTML += categoryHtml;
+        });
+    };
+
+    const renderCart = () => {
+        if (cart.length === 0) {
+            emptyCartMsg.style.display = 'block';
+            cartSummary.classList.add('hidden');
+            cartItemsContainer.innerHTML = '';
+            clearCartBtn.classList.add('hidden');
+        } else {
+            emptyCartMsg.style.display = 'none';
+            cartSummary.classList.remove('hidden');
+            clearCartBtn.classList.remove('hidden');
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between fade-in">
+                    <div class="flex-1">
+                        <p class="font-bold text-gray-800 break-words">${item.name}</p>
+                        <p class="text-sm text-gray-500">${formatPrice(item.price)} د.ع</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-gray-100 rounded-full p-1 ml-2">
+                        <button class="quantity-change-btn bg-[#ffd700] text-gray-800 rounded-full p-1 hover:bg-yellow-300 transition-colors" data-cart-id="${item.id}" data-change="1" aria-label="زيادة الكمية">
+                             <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </button>
+                        <span class="font-bold w-6 text-center tabular-nums">${item.quantity}</span>
+                         <button class="quantity-change-btn bg-gray-200 text-gray-700 rounded-full p-1 hover:bg-gray-300 transition-colors" data-cart-id="${item.id}" data-change="-1" aria-label="تقليل الكمية">
+                           ${item.quantity === 1 ? '<svg class="w-4 h-4 text-red-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>' : '<svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"></path></svg>'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        cartTotalEl.textContent = `${formatPrice(total)} د.ع`;
+        saveCart();
+    };
+    // --- END: RENDER FUNCTIONS ---
+    
+    // --- START: EVENT HANDLERS ---
+    const handleAddToCart = (productId, selectedVariant) => {
+        let product;
+        for (const category of menuData) {
+            const found = category.items.find(item => item.id == productId);
+            if (found) {
+                product = found;
+                break;
+            }
+        }
+        if (!product) return;
+        
+        const cartItemId = selectedVariant ? `${product.id}-${selectedVariant.name}` : `${product.id}`;
+        const price = selectedVariant ? selectedVariant.price : product.price;
+        const name = selectedVariant ? `${product.name} (${selectedVariant.name})` : product.name;
+
+        const existingItem = cart.find(item => item.id === cartItemId);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({ id: cartItemId, productId: product.id, name, price, quantity: 1 });
+        }
+        
+        showToast(`تمت إضافة "${name}" إلى السلة`);
+        renderCart();
+    };
+    
+    const handleUpdateQuantity = (cartItemId, change) => {
+        const item = cart.find(i => i.id === cartItemId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== cartItemId);
+            }
+        }
+        renderCart();
+    };
+
+    const handleSendOrder = (method) => {
+        if (cart.length === 0) {
+            showToast("السلة فارغة!");
+            return;
+        }
+
+        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        let orderDetails = cart.map(item =>
+            `- ${item.quantity} x ${item.name} = ${formatPrice(item.price * item.quantity)} د.ع`
+        ).join('\n');
+        
+        const orderText = `
+طلب جديد من مطعم ملح وسكر:
+====================
+${orderDetails}
+====================
+المجموع الكلي: ${formatPrice(total)} د.ع
+ملاحظات: ${notesEl.value || 'لا يوجد'}
+        `.trim();
+
+        const encodedText = encodeURIComponent(orderText);
+        let url = '';
+
+        if (method === 'whatsapp') {
+            url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`;
+        } else {
+            url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodedText}`;
+        }
+        window.open(url, '_blank');
+        showToast("تم تحويلك لإرسال الطلب!");
+    };
+    // --- END: EVENT HANDLERS ---
+
+    // --- START: EVENT LISTENERS ---
+    showMenuBtn.addEventListener('click', () => {
+        headerSection.classList.add('hidden');
+        menuSection.classList.remove('hidden');
+    });
+
+    backToHeaderBtn.addEventListener('click', () => {
+        menuSection.classList.add('hidden');
+        headerSection.classList.remove('hidden');
+    });
+
+    menuContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-to-cart-btn')) {
+            const itemEl = e.target.closest('[data-product-id]');
+            const productId = itemEl.dataset.productId;
+            const variantRadio = itemEl.querySelector('input[type="radio"]:checked');
+            const selectedVariant = variantRadio ? { name: variantRadio.value, price: parseFloat(variantRadio.dataset.price) } : null;
+            handleAddToCart(productId, selectedVariant);
+        } else if (e.target.matches('input[type="radio"][name^="variant-"]')) {
+            const itemEl = e.target.closest('[data-product-id]');
+            const priceEl = itemEl.querySelector('.item-price');
+            priceEl.textContent = `${formatPrice(parseFloat(e.target.dataset.price))} د.ع`;
+        }
+    });
+
+    cartItemsContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('quantity-change-btn')) {
+            const cartId = e.target.dataset.cartId;
+            const change = parseInt(e.target.dataset.change, 10);
+            handleUpdateQuantity(cartId, change);
+        }
+    });
+    
+    clearCartBtn.addEventListener('click', () => {
+        if (confirm("هل أنت متأكد من أنك تريد تفريغ السلة؟")) {
+            cart = [];
+            renderCart();
+            showToast("تم تفريغ السلة");
+        }
+    });
+    
+    sendWhatsappBtn.addEventListener('click', () => handleSendOrder('whatsapp'));
+    sendTelegramBtn.addEventListener('click', () => handleSendOrder('telegram'));
+
+    // Set social links
+    document.getElementById('instagram-link').href = INSTAGRAM_URL;
+    document.getElementById('telegram-link').href = `https://t.me/${TELEGRAM_USERNAME}`;
+    document.getElementById('whatsapp-link-header').href = `https://wa.me/${WHATSAPP_NUMBER}`;
+    // --- END: EVENT LISTENERS ---
+    
+    // --- START: INITIALIZATION ---
+    loadCart();
+    renderMenu();
+    renderCart();
+    // --- END: INITIALIZATION ---
+});
+</script>
+
+</body>
+</html>
