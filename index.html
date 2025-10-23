@@ -103,6 +103,12 @@
 
         <!-- Menu & Cart Section -->
         <div id="menu-section" class="hidden fade-in">
+            <!-- Admin Mode Indicator -->
+            <div id="admin-mode-indicator" class="hidden bg-green-600 text-white text-center py-3 px-4 rounded-lg mb-4 shadow-lg">
+                <span class="font-bold">🔧 وضع الإدارة مفعّل</span>
+                <span class="text-sm mr-2">- يمكنك إخفاء/إظهار الأصناف</span>
+            </div>
+            
             <div class="flex justify-between items-center mb-6">
                  <h1 class="text-4xl md:text-5xl font-bold text-white shadow-sm">
                     <span class="font-pacifico">Milh & Suker</span>
@@ -348,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (password === ADMIN_PASSWORD) {
                 isAdminMode = true;
                 showToast('مرحباً! تم تفعيل وضع الإدارة');
+                updateAdminButton();
                 renderMenu();
             } else if (password !== null) {
                 showToast('كلمة مرور خاطئة!');
@@ -355,7 +362,27 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             isAdminMode = false;
             showToast('تم إيقاف وضع الإدارة');
+            updateAdminButton();
             renderMenu();
+        }
+    };
+
+    const updateAdminButton = () => {
+        const adminBtn = document.getElementById('admin-panel-btn');
+        const indicator = document.getElementById('admin-mode-indicator');
+        
+        if (adminBtn) {
+            if (isAdminMode) {
+                adminBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+                adminBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                adminBtn.title = 'إيقاف وضع الإدارة';
+                if (indicator) indicator.classList.remove('hidden');
+            } else {
+                adminBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                adminBtn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+                adminBtn.title = 'لوحة التحكم';
+                if (indicator) indicator.classList.add('hidden');
+            }
         }
     };
     // --- END: HELPER FUNCTIONS ---
