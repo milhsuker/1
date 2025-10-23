@@ -61,7 +61,6 @@
         }
     </style>
 
-  <script type="module" crossorigin src="/assets/index-B5Qt9EMX.js"></script>
 </head>
 <body>
 
@@ -551,6 +550,13 @@ ${orderDetails}
     showMenuBtn.addEventListener('click', () => {
         headerSection.classList.add('hidden');
         menuSection.classList.remove('hidden');
+        
+        // Setup admin button after menu is shown
+        const adminBtn = document.getElementById('admin-panel-btn');
+        if (adminBtn && !adminBtn.hasAttribute('data-listener')) {
+            adminBtn.addEventListener('click', toggleAdminMode);
+            adminBtn.setAttribute('data-listener', 'true');
+        }
     });
 
     backToHeaderBtn.addEventListener('click', () => {
@@ -601,11 +607,6 @@ ${orderDetails}
     });
     
     sendWhatsappBtn.addEventListener('click', () => handleSendOrder('whatsapp'));
-
-    const adminBtn = document.getElementById('admin-panel-btn');
-    if (adminBtn) {
-        adminBtn.addEventListener('click', toggleAdminMode);
-    }
 
     // Set social links
     document.getElementById('instagram-link').href = INSTAGRAM_URL;
