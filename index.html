@@ -103,25 +103,14 @@
 
         <!-- Menu & Cart Section -->
         <div id="menu-section" class="hidden fade-in">
-            <!-- Admin Mode Indicator -->
-            <div id="admin-mode-indicator" class="hidden bg-green-600 text-white text-center py-3 px-4 rounded-lg mb-4 shadow-lg">
-                <span class="font-bold">🔧 وضع الإدارة مفعّل</span>
-                <span class="text-sm mr-2">- يمكنك إخفاء/إظهار الأصناف</span>
-            </div>
-            
             <div class="flex justify-between items-center mb-6">
                  <h1 class="text-4xl md:text-5xl font-bold text-white shadow-sm">
                     <span class="font-pacifico">Milh & Suker</span>
                     <span class="block text-2xl text-yellow-300 font-sans tracking-wider">قائمة الطعام</span>
                 </h1>
-                <div class="flex gap-2">
-                    <button id="admin-panel-btn" class="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors" title="لوحة التحكم">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </button>
-                    <button id="back-to-header-btn" class="bg-[#ffd700] text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md hover:bg-yellow-300 transition-colors">
-                        الرجوع للرئيسية
-                    </button>
-                </div>
+                <button id="back-to-header-btn" class="bg-[#ffd700] text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md hover:bg-yellow-300 transition-colors">
+                    الرجوع للرئيسية
+                </button>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Menu Container -->
@@ -277,9 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- START: STATE ---
     let cart = [];
-    let isAdminMode = false;
-    let hiddenItems = [];
-    const ADMIN_PASSWORD = '1234'; // يمكن تغيير كلمة المرور هنا
     // --- END: STATE ---
 
     // --- START: DOM SELECTORS ---
@@ -320,82 +306,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const loadHiddenItems = () => {
-        const saved = localStorage.getItem('milhSukerHiddenItems');
-        if (saved) {
-            hiddenItems = JSON.parse(saved);
-        }
-    };
-
-    const saveHiddenItems = () => {
-        localStorage.setItem('milhSukerHiddenItems', JSON.stringify(hiddenItems));
-    };
-
-    const isItemHidden = (itemId) => {
-        return hiddenItems.includes(itemId);
-    };
-
-    const toggleItemVisibility = (itemId) => {
-        const index = hiddenItems.indexOf(itemId);
-        if (index > -1) {
-            hiddenItems.splice(index, 1);
-            showToast('تم إظهار الصنف للعملاء');
-        } else {
-            hiddenItems.push(itemId);
-            showToast('تم إخفاء الصنف (سيظهر "نفذ")');
-        }
-        saveHiddenItems();
-        renderMenu();
-    };
-
-    const toggleAdminMode = () => {
-        if (!isAdminMode) {
-            const password = prompt('أدخل كلمة المرور للوصول إلى لوحة التحكم:');
-            if (password === ADMIN_PASSWORD) {
-                isAdminMode = true;
-                showToast('مرحباً! تم تفعيل وضع الإدارة');
-                updateAdminButton();
-                renderMenu();
-            } else if (password !== null) {
-                showToast('كلمة مرور خاطئة!');
-            }
-        } else {
-            isAdminMode = false;
-            showToast('تم إيقاف وضع الإدارة');
-            updateAdminButton();
-            renderMenu();
-        }
-    };
-
-    const updateAdminButton = () => {
-        const adminBtn = document.getElementById('admin-panel-btn');
-        const indicator = document.getElementById('admin-mode-indicator');
-        
-        if (adminBtn) {
-            if (isAdminMode) {
-                adminBtn.classList.remove('bg-gray-700', 'hover:bg-gray-600');
-                adminBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-                adminBtn.title = 'إيقاف وضع الإدارة';
-                if (indicator) indicator.classList.remove('hidden');
-            } else {
-                adminBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
-                adminBtn.classList.add('bg-gray-700', 'hover:bg-gray-600');
-                adminBtn.title = 'لوحة التحكم';
-                if (indicator) indicator.classList.add('hidden');
-            }
-        }
-    };
     // --- END: HELPER FUNCTIONS ---
 
     // --- START: RENDER FUNCTIONS ---
     const renderMenu = () => {
         menuContainer.innerHTML = '';
         menuData.forEach(category => {
-            // عرض جميع الأصناف دائماً (المخفية تظهر بعلامة "نفذ")
-            const itemsToShow = category.items;
-            
-            if (itemsToShow.length === 0) return;
-            
             const categoryHtml = `
                 <div class="fade-in">
                     <div class="mb-4">
@@ -403,27 +319,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${category.notes ? `<p class="text-white mt-2 text-sm">${category.notes}</p>` : ''}
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${itemsToShow.map(item => {
-                            const isHidden = hiddenItems.includes(item.id);
-                            return `
-                            <div class="bg-[#fffacd] rounded-xl shadow-lg p-4 flex flex-col justify-between border-2 ${isHidden && !isAdminMode ? 'border-red-500 border-4 opacity-50 saturate-0' : isHidden ? 'border-red-400' : 'border-transparent'} ${isHidden && !isAdminMode ? '' : 'hover:border-[#ffd700]'} transition-all duration-300 relative" data-product-id="${item.id}">
-                                ${isAdminMode ? `
-                                    <button class="toggle-item-btn absolute top-2 left-2 z-10 ${isHidden ? 'bg-green-500' : 'bg-red-500'} text-white p-2 rounded-full shadow-md hover:opacity-80 transition-opacity" data-item-id="${item.id}" title="${isHidden ? 'إظهار' : 'إخفاء'}">
-                                        ${isHidden ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>' : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>'}
-                                    </button>
-                                ` : ''}
-                                ${isHidden && !isAdminMode ? '<div class="absolute top-2 right-2 bg-red-600 text-white text-sm px-4 py-2 rounded-full font-bold shadow-xl z-20 animate-pulse">نفذ ❌</div>' : isHidden ? '<div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">نفذ</div>' : ''}
-                                <div class="${isHidden && !isAdminMode ? 'opacity-60' : ''}">
-                                    <h3 class="text-xl font-bold ${isHidden && !isAdminMode ? 'text-gray-500 line-through' : 'text-gray-800'}">${item.name}</h3>
-                                    <p class="${isHidden && !isAdminMode ? 'text-gray-400' : 'text-gray-600'} my-2 text-sm min-h-[40px]">${item.description}</p>
+                        ${category.items.map(item => `
+                            <div class="bg-[#fffacd] rounded-xl shadow-lg p-4 flex flex-col justify-between border-2 border-transparent hover:border-[#ffd700] transition-all duration-300" data-product-id="${item.id}">
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">${item.name}</h3>
+                                    <p class="text-gray-600 my-2 text-sm min-h-[40px]">${item.description}</p>
                                 </div>
                                 ${item.variants ? `
                                 <div class="my-3">
                                     <div class="flex flex-wrap gap-2">
                                         ${item.variants.map((variant, index) => `
-                                            <label class="${isHidden && !isAdminMode ? 'cursor-not-allowed' : 'cursor-pointer'}">
-                                                <input type="radio" name="variant-${item.id}" value="${variant.name}" class="sr-only peer" ${index === 0 ? 'checked' : ''} data-price="${variant.price}" ${isHidden && !isAdminMode ? 'disabled' : ''}>
-                                                <div class="px-3 py-1 text-sm font-semibold rounded-full border-2 transition-colors ${isHidden && !isAdminMode ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 peer-checked:bg-[#338d83] peer-checked:text-white peer-checked:border-[#338d83] hover:border-[#338d83]'}">
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="variant-${item.id}" value="${variant.name}" class="sr-only peer" ${index === 0 ? 'checked' : ''} data-price="${variant.price}">
+                                                <div class="px-3 py-1 text-sm font-semibold rounded-full border-2 transition-colors bg-white text-gray-700 border-gray-300 peer-checked:bg-[#338d83] peer-checked:text-white peer-checked:border-[#338d83] hover:border-[#338d83]">
                                                     ${variant.name}
                                                 </div>
                                             </label>
@@ -433,12 +341,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ` : ''}
                                 <div class="flex justify-between items-center mt-2">
                                     <span class="text-lg font-bold text-[#338d83] item-price">${formatPrice(item.variants ? item.variants[0].price : item.price)} د.ع</span>
-                                    <button class="add-to-cart-btn ${isHidden && !isAdminMode ? 'bg-gray-400 cursor-not-allowed opacity-50' : 'bg-[#ffd700] hover:bg-yellow-300 transform hover:scale-110'} text-gray-800 p-2 rounded-full shadow-md transition-transform" aria-label="إضافة ${item.name} للسلة" ${isHidden && !isAdminMode ? 'disabled' : ''}>
+                                    <button class="add-to-cart-btn bg-[#ffd700] text-gray-800 p-2 rounded-full shadow-md hover:bg-yellow-300 transform hover:scale-110 transition-transform" aria-label="إضافة ${item.name} للسلة">
                                         <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                                     </button>
                                 </div>
                             </div>
-                        `}).join('')}
+                        `).join('')}
                     </div>
                 </div>
             `;
@@ -578,13 +486,6 @@ ${orderDetails}
     showMenuBtn.addEventListener('click', () => {
         headerSection.classList.add('hidden');
         menuSection.classList.remove('hidden');
-        
-        // Setup admin button after menu is shown
-        const adminBtn = document.getElementById('admin-panel-btn');
-        if (adminBtn && !adminBtn.hasAttribute('data-listener')) {
-            adminBtn.addEventListener('click', toggleAdminMode);
-            adminBtn.setAttribute('data-listener', 'true');
-        }
     });
 
     backToHeaderBtn.addEventListener('click', () => {
@@ -593,19 +494,9 @@ ${orderDetails}
     });
 
     menuContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('toggle-item-btn') || e.target.closest('.toggle-item-btn')) {
-            const btn = e.target.classList.contains('toggle-item-btn') ? e.target : e.target.closest('.toggle-item-btn');
-            const itemId = parseInt(btn.dataset.itemId);
-            toggleItemVisibility(itemId);
-        } else if (e.target.classList.contains('add-to-cart-btn')) {
+        if (e.target.classList.contains('add-to-cart-btn')) {
             const itemEl = e.target.closest('[data-product-id]');
             const productId = parseInt(itemEl.dataset.productId);
-            
-            if (hiddenItems.includes(productId) && !isAdminMode) {
-                showToast('هذا الصنف غير متوفر حالياً');
-                return;
-            }
-            
             const variantRadio = itemEl.querySelector('input[type="radio"]:checked');
             const selectedVariant = variantRadio ? { name: variantRadio.value, price: parseFloat(variantRadio.dataset.price) } : null;
             handleAddToCart(productId, selectedVariant);
@@ -643,7 +534,6 @@ ${orderDetails}
     
     // --- START: INITIALIZATION ---
     loadCart();
-    loadHiddenItems();
     renderMenu();
     renderCart();
     // --- END: INITIALIZATION ---
